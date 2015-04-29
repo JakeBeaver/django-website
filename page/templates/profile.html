@@ -1,0 +1,98 @@
+<head>
+<style>
+a {
+color: #aaa;
+text-decoration: none;
+}
+body {
+font-size: 15pt;
+background-color: black;
+color: white;
+}
+#timestamp {
+text-decoration: italic;
+font-size: 12pt;
+color:black;
+}
+#post {
+font-size: 12pt;
+text-decoration: none;
+color: black
+}
+#username {
+font-size: 12pt;
+text-decoration: bold;
+color: black
+}
+#admin {
+position:fixed;
+font-size: 30pt;
+right:20px;
+top: 10px;
+}
+#box{
+background-color: gray;
+position:fixed;
+bottom:20px;
+left:20px;
+right:220px;
+top: 80px;
+border: 3px solid #3fb;
+}
+#userlist {
+font-size: 12pt;
+position: fixed;
+overflow: auto;
+right: 10px;
+width: 200px;
+}
+</style>
+
+
+</head
+
+
+
+<body>
+{% if user.is_authenticated %}
+Hello, {{user.username}}! - <a href="/accounts/logout/">Log out</a>
+<form action="/posts/" method="POST"> {% csrf_token %}
+	
+	<input type="text" name="body" value="" id="body">
+	<input type="submit" value="shout!">
+</form>
+{% else %}
+<a href="/accounts/login/">Log in</a> <br> <a href="/accounts/register/">Sign in</a>
+{% endif %}
+
+{% if user.username == "jake" %}
+<a id = "admin" href="/admin/">Admin</a>
+
+
+{% endif %}
+
+
+
+
+
+<div id="box">
+		{% for post in posts %}
+		<span id="timestamp"><i>{{post.timestamp}}</i> :: </span>
+		<span id="username"><b>{{post.username}}: </b></span>
+		<span id="post">{{post.body}}</span><br>
+		{% endfor %}
+</div>
+
+<div id="userlist">
+	<a href="/">users:<a> <br>
+	{% for item in users %}
+		{% if item.username != user.username %}
+			<a href="/{{item.username}}">{{item.username}}</a> <br>
+		{% else %}
+			 <a href="/{{item.username}}"><span style="color: yellow">-->{{item.username}}</span></a> <br>
+		{% endif %}
+	{% endfor %}
+</div>
+
+
+</body>
